@@ -52,6 +52,8 @@ module "alb" {
 
   name    = "blog-alb"
 
+  load_balancer_type = "application"
+
   vpc_id  = module.blog_vpc.vpc_id
   subnets = module.blog_vpc.public_subnets
   security_groups = [module.blog_sg.security_group_id]
@@ -72,12 +74,14 @@ module "alb" {
     }
   ]
 
-  listeners = {
-    ex-http-https-redirect = {
-      port     = 80
-      protocol = "HTTP"
-      target_group_index = 0
-    }
+  http_tcp_listeners = {
+    port     = 80
+    protocol = "HTTP"
+    target_group_index = 0
+  }
+
+  tags = {
+    Environment = "dev"
   }
 }
 
